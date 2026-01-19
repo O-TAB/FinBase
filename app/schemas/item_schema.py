@@ -8,7 +8,7 @@ from uuid import UUID
 class PostItemSchema(BaseModel):
     name: Annotated[str, Field()]
     category: Annotated[FoodCategory, Field()]
-    price: Annotated[Decimal, Field()]
+    price: Annotated[Decimal, Field(max_digits=10,decimal_places=2)]
 
     model_config = ConfigDict(from_attributes=True)
 

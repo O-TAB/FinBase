@@ -1,7 +1,7 @@
 from decimal import Decimal
 from .base_model import Base
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Numeric, UUID
+from sqlalchemy import String, UUID, Numeric
 import uuid
 
 
@@ -13,4 +13,4 @@ class ItemModel(Base):
     )
     name: Mapped[str] = mapped_column(String(100))
     category: Mapped[str] = mapped_column(String(100))
-    price: Mapped[Decimal] = mapped_column(Numeric)
+    price: Mapped[Decimal] = mapped_column(Numeric(precision=10,scale=2))
