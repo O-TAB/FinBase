@@ -1,3 +1,6 @@
+
+import re
+from uuid import UUID
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from ..schemas.item_schema import PostItemSchema, GetItemSchema
@@ -12,23 +15,29 @@ def get_service(session: Session = Depends(get_db)):
 
 
 @router.get("/")
-async def get_menu():
-    pass
-
+async def get_menu(
+    service: GenericService = Depends(get_service)
+):
+    response = service.get_all()
+    return response
 
 @router.get("/{item_id}")
-async def get_item(item_id):
-    pass
-
-
+async def get_item(
+    item_id: UUID, service: GenericService = Depends(get_service)
+) -> GetItemSchema:
+    response = service.get_by_id(item_id)
+    if not response:
+        raise ValueError
+    return response
+    
 @router.post("/", response_model=GetItemSchema)
 async def post_new_food(
     item: PostItemSchema, service: GenericService = Depends(get_service)
 ) -> GetItemSchema:
-    reponse = service.create(item)
-    if not reponse:
+    response = service.create(item)
+    if not response:
         raise ValueError
-    return reponse
+    return response
 
 
 @router.put("/{item_id}")

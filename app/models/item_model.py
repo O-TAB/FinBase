@@ -13,4 +13,4 @@ class ItemModel(Base):
     )
     name: Mapped[str] = mapped_column(String(100))
     category: Mapped[str] = mapped_column(String(100))
-    price: Mapped[Decimal] = mapped_column(Numeric(precision=10,scale=2))
+    price: Mapped[Decimal] = mapped_column(Numeric(precision=6,scale=2))
