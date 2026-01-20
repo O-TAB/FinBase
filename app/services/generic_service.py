@@ -1,5 +1,5 @@
 from ..repositories.generic_repository import GenericRepository
-from ..schemas.item_schema import PostItemSchema, GetItemSchema
+from ..schemas.item_schema import PostItemSchema, GetItemSchema, UpdateItemSchema
 
 
 class GenericService:
@@ -19,5 +19,9 @@ class GenericService:
         items = {}
         items["itens"] = [GetItemSchema.model_validate(obj) for obj in result]
         return items
+    
+    def update(self, id, payload: UpdateItemSchema):
+        result = self._repo.update(id, payload.model_dump(exclude_none=True))
+        return GetItemSchema.model_validate(result) if result else None
             
 

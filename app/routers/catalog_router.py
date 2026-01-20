@@ -1,9 +1,7 @@
-
-import re
 from uuid import UUID
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from ..schemas.item_schema import PostItemSchema, GetItemSchema
+from ..schemas.item_schema import PostItemSchema, GetItemSchema, UpdateItemSchema
 from ..services.generic_service import GenericService
 from ..db import get_db
 
@@ -40,6 +38,11 @@ async def post_new_food(
     return response
 
 
-@router.put("/{item_id}")
-async def update_food(item_id):
-    pass
+@router.patch("/{item_id}")
+async def update_food(
+    item_id: UUID, item: UpdateItemSchema, service: GenericService = Depends(get_service)
+):
+    response = service.update(item_id, item)
+    if not response:
+        raise ValueError
+    return response
